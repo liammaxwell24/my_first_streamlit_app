@@ -1,0 +1,113 @@
+import streamlit as st
+import random
+import altair as alt
+import numpy as np
+import pandas as pd
+
+st.header('Homework 1')
+
+st.markdown(
+"**QUESTION 1**: In previous homeworks you created dataframes from random numbers.\n"
+"Create a datframe where the x axis limit is 100 and the y values are random values.\n"
+"Print the dataframe you create and use the following code block to help get you started"
+)
+
+st.code(
+''' 
+x_limit = 100
+
+# List of values from 0 to 100 each value being 1 greater than the last
+x_axis = np.arange(0, x_limit, 1)
+
+# Create a random array of data that we will use for our y values
+y_data = []
+
+df = pd.DataFrame({'x': x_axis,
+                     'y': y_data})
+st.write(df)''',language='python')
+
+x_limit = 100
+
+x_axis = np.arange(0,x_limit, 1)
+
+y_data = [random.random() for value in x_axis]
+
+df = pd.DataFrame({'TEST': x_axis,
+                     'y': y_data})
+st.write(df)
+
+st.markdown(
+"**QUESTION 2**: Using the dataframe you just created, create a basic scatterplot and Print it.\n"
+"Use the following code block to help get you started."
+)
+
+st.code(
+''' 
+scatter = alt.Chart().mark_point().encode()
+
+st.altair_chart(scatter, use_container_width=True)''',language='python')
+
+
+scatter = alt.Chart(df).mark_point().encode(x ='TEST', y='y').configure_mark(
+    opacity=0.5,
+    color='red'
+)
+
+
+tab1, tab2 = st.tabs(["Streamlit theme (default)", "Altair native theme"])
+with tab1:
+    # Use the Streamlit theme.
+    # This is the default. So you can also omit the theme argument.
+    st.altair_chart(scatter, theme="streamlit", use_container_width=True)
+with tab2:
+    # Use the native Altair theme.
+    st.altair_chart(scatter, theme=None, use_container_width=True)
+   
+
+
+st.markdown(
+"**QUESTION 3**: Lets make some edits to the chart by reading the documentation on Altair.\n"
+"https://docs.streamlit.io/library/api-reference/charts/st.altair_chart.  "
+"Make 5 changes to the graph, document the 5 changes you made using st.markdown(), and print the new scatterplot.  \n"
+"To make the bullet points and learn more about st.markdown() refer to the following discussion.\n"
+"https://discuss.streamlit.io/t/how-to-indent-bullet-point-list-items/28594/3"
+)
+
+st.markdown("The five changes I made were.....")
+st.markdown("""
+The 5 changes I made were:
+- Change 1: Added a tab format
+- Change 2: Changed the theme of tab 1 to be the default Streamlit theme
+- Change 3: Changed the color of the points
+- Change 4: Changed the opacity of the points
+- Change 5: Changed the x axis title to 'TEST'
+""")
+
+from vega_datasets import data
+
+source = data.movies()
+
+line = alt.Chart(source).mark_line().encode(
+    x=alt.X("IMDB_Rating", bin=True),
+    y=alt.Y(
+        alt.repeat("layer"), aggregate="max", title="Mean of U and Worldwide Gross"
+    ),
+    color=alt.datum(alt.repeat("layer")),
+).repeat(layer=["United States Gross", "Worldwide_Gross"])
+
+st.altair_chart(line)
+
+
+st.markdown(
+"**QUESTION 4**: Explore on your own!  Go visit https://altair-viz.github.io/gallery/index.html.\n "
+"Pick a random visual, make two visual changes to it, document those changes, and plot the visual.  \n"
+"You may need to pip install in our terminal for example pip install vega_datasets "
+)
+
+st.markdown("""
+The 2 changes I made were:
+- Change 1: Renamed chart United States gross
+- Change 2: changed aggregate to max
+"""
+)
+
