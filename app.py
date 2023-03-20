@@ -83,20 +83,6 @@ The 5 changes I made were:
 - Change 5: Changed the x axis title to 'TEST'
 """)
 
-from vega_datasets import data
-
-source = data.movies()
-
-line = alt.Chart(source).mark_line().encode(
-    x=alt.X("IMDB_Rating", bin=True),
-    y=alt.Y(
-        alt.repeat("layer"), aggregate="max", title="Mean of U and Worldwide Gross"
-    ),
-    color=alt.datum(alt.repeat("layer")),
-).repeat(layer=["United States Gross", "Worldwide_Gross"])
-
-st.altair_chart(line)
-
 
 st.markdown(
 "**QUESTION 4**: Explore on your own!  Go visit https://altair-viz.github.io/gallery/index.html.\n "
